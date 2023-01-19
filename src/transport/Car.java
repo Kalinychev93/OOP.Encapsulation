@@ -1,19 +1,36 @@
 package transport;
 
-public class Car {
-    private final String brand;
-    private final String model;
+public class Car extends Transport{
     private double engineVolume;
-    private String color;
-    private final int productionYear;
-    private final String productionCountry;
     private String transmission;
     private final String bodyType;
     private String registrationNumber;
     private final int numberOfSeats;
     private boolean summerTyres;
-
     private Key key;
+
+    public Car(String brand,
+               String model,
+               int productionYear,
+               String productionCountry,
+               String color,
+               double maxSpeed,
+               double engineVolume,
+               String transmission,
+               String bodyType,
+               String registrationNumber,
+               int numberOfSeats,
+               boolean summerTyres,
+               Key key) {
+        super(brand, model, productionYear, productionCountry, color, maxSpeed);
+        this.engineVolume = engineVolume <= 0 ? 1.5 : engineVolume;
+        this.transmission = transmission == null || transmission.isBlank() ? "МКПП" : transmission;
+        this.bodyType = bodyType == null || bodyType.isBlank() ? "седан" : bodyType;
+        this.registrationNumber = registrationNumber == null || registrationNumber.isBlank() ? "а000аа77" : registrationNumber;
+        this.numberOfSeats = numberOfSeats <= 0 ? 4 : numberOfSeats;
+        this.summerTyres = summerTyres;
+        this.key = key == null ? new Car.Key(false, false) : key;
+    }
 
     public static class Key {
         private final boolean remoteRun;
@@ -39,32 +56,6 @@ public class Car {
         }
     }
 
-    public Car(String brand,
-               String model,
-               double engineVolume,
-               String color,
-               int productionYear,
-               String productionCountry,
-               String transmission,
-               String bodyType,
-               String registrationNumber,
-               int numberOfSeats,
-               boolean summerTyres,
-               Key key) {
-//  для проверки пустой строки использую метод isBlank, т.к. он в отличие от метода isEmpty проверяет еще и пробелы,если в строку передали одни пробелы - программа вернет значение true
-        this.brand = brand == null || brand.isBlank() ? "default" : brand;
-        this.model = model == null || model.isBlank() ? "default" : model;
-        this.productionCountry = productionCountry == null || productionCountry.isBlank() ? "default" : productionCountry;
-        this.engineVolume = engineVolume <= 0 ? 1.5 : engineVolume;
-        this.color = color == null || color.isBlank() ? "белый" : color;
-        this.productionYear = productionYear <= 0 ? 2000 : productionYear;
-        this.transmission = transmission == null || transmission.isBlank() ? "МКПП" : transmission;
-        this.bodyType = bodyType == null || bodyType.isBlank() ? "седан" : bodyType;
-        this.registrationNumber = registrationNumber == null || registrationNumber.isBlank() ? "x000xx99" : registrationNumber;
-        this.numberOfSeats = numberOfSeats <= 0 ? 4 : numberOfSeats;
-        this.summerTyres = summerTyres;
-        this.key = key == null ? new Key(false, false) : key;
-    }
 
     public void changeTyres(int month) {
         if (month >= 4 && month <= 10) {
@@ -75,36 +66,12 @@ public class Car {
         }
     }
 
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
     public double getEngineVolume() {
         return engineVolume;
     }
 
     public void setEngineVolume(double engineVolume) {
         this.engineVolume = engineVolume <= 0 ? 1.5 : engineVolume;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color == null || color.isBlank() ? "белый" : color;
-    }
-
-    public int getProductionYear() {
-        return productionYear;
-    }
-
-    public String getProductionCountry() {
-        return productionCountry;
     }
 
     public String getTransmission() {
@@ -124,7 +91,7 @@ public class Car {
     }
 
     public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber == null || registrationNumber.isBlank() ? "x000xx99" : registrationNumber;
+        this.registrationNumber = registrationNumber == null || registrationNumber.isBlank() ? "а000аа77" : registrationNumber;
     }
 
     public int getNumberOfSeats() {
@@ -144,22 +111,21 @@ public class Car {
     }
 
     public void setKey(Key key) {
-        this.key = key == null ? new Key(false, false) : key;
+        this.key = key == null ? new Car.Key(false, false) : key;
     }
 
     @Override
     public String toString() {
-        return "Автомобиль:" + brand + ", "
-                + "модель:" + model
-                + ", объем двигателя: " + engineVolume + " л.,"
-                + " цвет; " + color
-                + ", год выпуска - " + productionYear
-                + ", страна-производитель - " + productionCountry
-                + ", коробка передач: " + transmission
-                + ", тип кузова - " + bodyType
-                + ", регистрационный номер: " + registrationNumber
-                + ", количество мест: " + numberOfSeats
-                + ", тип резины: " + (summerTyres ? "летняя" : "зимняя")
-                + ", " + key;
+        return super.toString() +
+                ", максимальная скорость: " + maxSpeed + " км/ч." +
+                ", мощность двигателя: " + engineVolume +
+                ", коробка передач: " + transmission +
+                ", тип кузова - " + bodyType +
+                ", рег.номер: " + registrationNumber +
+                ", количество мест: " + numberOfSeats +
+                ", тип резины - " + (summerTyres ? "летняя" : "зимняя") +
+                ", " + key;
     }
 }
+
+
